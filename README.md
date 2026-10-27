@@ -60,5 +60,6 @@ Set `DATABASE_URL` in the hosting provider's environment variables and run:
 npm start
 ```
 
-The platform's `PORT` variable is used automatically. Static files are served
-from this folder, but server code, package files, and `.env` are not exposed.
+The platform's `PORT` variable is used automatically. Static files live in
+`public/`; Vercel serves them from its CDN and Express serves the same directory
+locally. Server code, package files, and `.env` are not exposed.

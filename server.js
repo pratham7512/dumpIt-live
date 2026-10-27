@@ -189,32 +189,26 @@ app.use('/api', (req, res) => {
 });
 
 /* ---------- static site ---------- */
-// Only the files the page actually needs are public. Server code, package
-// files, environment files, screenshots and design references stay private.
+// Everything the browser needs lives in public/. Vercel serves that directory
+// from its CDN; Express does the same in local development. Server code,
+// package files, environment files and design references stay private.
+const PUBLIC = path.join(ROOT, 'public');
+
 const staticOptions = {
   dotfiles: 'deny',
   etag: true,
   maxAge: '1h',
   fallthrough: true,
+  index: false,
 };
 
-app.use('/assets', express.static(path.join(ROOT, 'assets'), staticOptions));
-app.use('/audio', express.static(path.join(ROOT, 'audio'), staticOptions));
-
-const pageFiles = ['styles.css', 'theme.css', 'script.js', 'app.js'];
+app.use(express.static(PUBLIC, staticOptions));
 
 app.get(['/', '/index.html'], (req, res) => {
+  // The filename is not fingerprinted, so revalidate on each load.
   res.set('Cache-Control', 'no-cache');
-  res.sendFile(path.join(ROOT, 'index.html'));
+  res.sendFile(path.join(PUBLIC, 'index.html'));
 });
-
-for (const file of pageFiles) {
-  app.get(`/${file}`, (req, res) => {
-    // These filenames are not fingerprinted, so revalidate them on each load.
-    res.set('Cache-Control', 'no-cache');
-    res.sendFile(path.join(ROOT, file));
-  });
-}
 
 app.use((req, res) => {
   res.status(404).type('text/plain').send('Not found');
