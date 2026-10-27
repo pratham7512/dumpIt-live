@@ -1035,6 +1035,18 @@
       e.preventDefault();
       if (form.dataset.submitting === 'true' || button?.disabled) return;
 
+      // Opening index.html directly (file://) cannot reach the API. Fail with
+      // a useful message instead of a console CORS error.
+      if (window.location.protocol === 'file:') {
+        form.classList.remove('is-success');
+        form.classList.add('is-invalid');
+        wrap?.classList.remove('is-success');
+        setNote('Preview mode — run `npm start` to join the waitlist.');
+        input?.focus();
+        setTimeout(() => form.classList.remove('is-invalid'), 450);
+        return;
+      }
+
       const email = input?.value.trim() || '';
       if (!emailRegex.test(email)) {
         form.classList.remove('is-success');

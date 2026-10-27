@@ -43,6 +43,7 @@
     <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.54.84l9.2-6.16a1 1 0 0 0 0-1.67L9.54 4.66A1 1 0 0 0 8 5.5Z" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 6.5"/></symbol>
+    <symbol id="i-ticks" viewBox="0 0 18 12"><path d="m1.2 6.2 3.3 3.3L10.4 3.2"/><path d="m6.8 6.2 3.3 3.3L16 3.2"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></symbol>
     <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
@@ -333,13 +334,6 @@
             </article>
           </div>
 
-          <svg class="how-doodle" viewBox="0 0 170 96" fill="none" aria-hidden="true">
-            <path d="M3 24c27 3 49 12 64 28 9 11 22 18 42 21" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-dasharray="2.5 6"/>
-            <path d="m100 65 11 8-9 9" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M22 70c7-6 15-8 22-6M29 79c6-4 12-5 18-4" stroke="currentColor" stroke-width="1.05" stroke-linecap="round" opacity=".62"/>
-            <path d="M18 9v10M13 14h10" stroke="currentColor" stroke-width="1.05" stroke-linecap="round" opacity=".5"/>
-          </svg>
-
           <figure class="phone-plate" data-reveal style="--reveal-delay:120ms">
             <div class="phone-stage" role="group" aria-label="A WhatsApp conversation with dumpit">
               <div class="phone">
@@ -382,7 +376,7 @@
                           <span class="wa-wave-time">0:04</span>
                           <svg class="icon wa-voice-mic" aria-hidden="true"><use href="#i-mic"/></svg>
                         </div>
-                        <div class="wa-meta"><span>9:41</span><span class="wa-ticks">✓✓</span></div>
+                        <div class="wa-meta"><span>9:41</span><svg class="icon wa-ticks" aria-hidden="true"><use href="#i-ticks"/></svg></div>
                       </div>
                     </div>
 
@@ -418,7 +412,7 @@
                     </div>
 
                     <div class="wa-row wa-row--out msg" data-msg="ask">
-                      <div class="wa-bubble wa-bubble--out wa-bubble--short">find my lecture notes<span class="wa-meta wa-meta--inline">9:42 <span class="wa-ticks">✓✓</span></span></div>
+                      <div class="wa-bubble wa-bubble--out wa-bubble--short">find my lecture notes<span class="wa-meta wa-meta--inline">9:42 <svg class="icon wa-ticks" aria-hidden="true"><use href="#i-ticks"/></svg></span></div>
                     </div>
 
                     <div class="wa-row wa-row--in msg" data-msg="found">
@@ -453,11 +447,6 @@
                 </div>
               </div>
             </div>
-            <button class="sound-toggle" type="button" data-sound-toggle aria-pressed="true" aria-label="Mute sound effects">
-              <svg class="icon sound-on" aria-hidden="true"><use href="#i-volume"/></svg>
-              <svg class="icon sound-off" aria-hidden="true"><use href="#i-volume-off"/></svg>
-              <span class="sound-toggle-text">Sound on</span>
-            </button>
             <figcaption class="sr-only">dumpit files a voice note into tasks, a shopping list and a study note, then finds the lecture note and confirms a reminder.</figcaption>
           </figure>
         </div>

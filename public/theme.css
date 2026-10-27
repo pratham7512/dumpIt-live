@@ -1030,12 +1030,12 @@ body.menu-open .menu-toggle span:last-child { top: 18px; }
 .premise-scrap--b span { font-size: 19px; }
 
 /* ---------- how it works ---------- */
-.how { padding: clamp(64px, 7vw, 96px) 0 clamp(56px, 6vw, 84px); }
+.how { padding: clamp(64px, 7vw, 96px) 0 clamp(16px, 2vw, 28px); }
 .how-grid {
   position: relative;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 300px);
-  gap: clamp(40px, 6vw, 84px);
-  margin-top: clamp(32px, 4vw, 48px);
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+  gap: clamp(36px, 5vw, 72px);
+  margin-top: clamp(28px, 3.4vw, 44px);
   align-items: start;
 }
 .how-doodle {
@@ -1048,7 +1048,7 @@ body.menu-open .menu-toggle span:last-child { top: 18px; }
   opacity: .62;
   pointer-events: none;
 }
-.how-steps { max-width: 580px; align-self: start; padding-top: 4px; }
+.how-steps { max-width: 600px; align-self: start; padding-top: 4px; }
 .how-step {
   --how-paper: var(--note-butter);
   --how-paper-ink: #2d2a21;
@@ -1180,8 +1180,8 @@ body.menu-open .menu-toggle span:last-child { top: 18px; }
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
+  justify-content: flex-start;
   min-width: 0;
   border-left: 0;
   padding-left: 0;
@@ -1189,20 +1189,36 @@ body.menu-open .menu-toggle span:last-child { top: 18px; }
 .phone-stage {
   position: relative;
   z-index: 1;
-  width: min(100%, 280px);
-  aspect-ratio: 9 / 16;
-  overflow: visible;
+  width: min(100%, 400px);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  overflow: clip;
+}
+.phone-plate::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 2%;
+  bottom: 4px;
+  z-index: 0;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(16, 16, 16, .18), transparent 72%);
+  filter: blur(10px);
+  pointer-events: none;
 }
 .phone {
   position: absolute;
-  inset: 0;
+  top: -33.3333%;
+  right: 0;
+  bottom: auto;
+  left: 0;
   width: 100%;
-  height: 100%;
-  padding: 9px;
-  border-radius: 54px;
+  height: 133.3333%;
+  padding: clamp(7px, .7vw, 9px);
+  border-radius: clamp(40px, 3.8vw, 54px);
   background: #0a0a0a;
   box-shadow:
-    0 34px 64px rgba(16, 16, 16, .16),
     inset 0 0 0 1.5px #3a3a37,
     inset 0 0 0 3px #0a0a0a;
 }
@@ -1215,7 +1231,7 @@ body.menu-open .menu-toggle span:last-child { top: 18px; }
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: 45px;
+  border-radius: clamp(33px, 3.1vw, 45px);
   background: #efeae2;
   display: flex;
   flex-direction: column;
@@ -1346,7 +1362,15 @@ body.menu-open .menu-toggle span:last-child { top: 18px; }
 .wa-bubble--in { border-radius: 3px 12px 12px 12px; }
 .wa-bubble--short { padding: 9px 11px 8px; font-size: 12px; max-width: 86%; }
 .wa-meta { gap: 4px; margin-top: 3px; font-size: 8.5px; }
-.wa-ticks { font-size: 8.5px; }
+.wa-ticks {
+  width: 13px;
+  height: 9px;
+  flex: none;
+  color: #53bdeb;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .wa-voice { gap: 7px; height: 38px; min-width: 224px; }
 .wa-wave-play { width: 30px; height: 30px; }
 .wa-wave-play .icon { width: 11px; height: 11px; }
@@ -1520,6 +1544,8 @@ body.menu-open .menu-toggle span:last-child { top: 18px; }
   isolation: isolate;
   padding: clamp(64px, 7vw, 96px) 0;
 }
+/* Keep the hand-off from the phone tight — the chapter gap already reads clear. */
+.how + .features { padding-top: clamp(40px, 4.4vw, 60px); }
 .features::before {
   content: "";
   position: sticky;
@@ -2654,8 +2680,6 @@ body.menu-open .menu-toggle span:last-child { top: 18px; }
   .how-step p { font-size: 14.5px; }
   .phone-plate { margin-top: 22px; padding-top: 0; border-top: 0; }
   .phone-plate .sound-toggle { display: none; }
-  .phone-stage { width: min(100%, 240px); aspect-ratio: 9 / 16; }
-  .phone { position: absolute; inset: 0; aspect-ratio: auto; }
   .wa-chat { padding: 5px 7px; }
   .wa-chat > .wa-system { margin-bottom: 4px; padding: 4px 8px; }
   .wa-day { margin-bottom: 5px; padding: 3px 8px; }
@@ -3234,4 +3258,37 @@ html:not(.js) .wa-chat { justify-content: flex-end; overflow-y: hidden; }
   .js.notes-intro .hero-notes .sticky-note .note-tape,
   .js .sticky-note .note-paper,
   .js .sticky-note .note-tape { opacity: 1; animation: none; }
+}
+
+/* ---------- phone illustration: responsive ---------- */
+@media (max-width: 1180px) {
+  .how-grid { grid-template-columns: minmax(0, 1fr) minmax(280px, 340px); }
+  .phone-stage { width: min(100%, 320px); }
+}
+
+@media (max-width: 900px) {
+  .how-grid { grid-template-columns: 1fr; }
+  .how-steps { max-width: 620px; }
+  .phone-plate {
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 0;
+    border-top: 0;
+  }
+  .phone-stage { width: min(100%, 300px); }
+  .how { padding-bottom: 30px; }
+}
+
+@media (max-width: 760px) {
+  .how { padding-bottom: 26px; }
+  .phone-plate { margin-top: 28px; }
+}
+
+@media (max-width: 560px) {
+  .how { padding-bottom: 22px; }
+  .phone-stage { width: min(100%, 268px); }
+}
+
+@media (max-width: 380px) {
+  .phone-stage { width: min(100%, 248px); }
 }
