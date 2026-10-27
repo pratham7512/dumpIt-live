@@ -1042,6 +1042,38 @@
 
   /* ---------- signup ---------- */
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const WAITLIST_CACHE_KEY = 'dumpit_waitlist';
+  const WAITLIST_CACHE_LIMIT = 20;
+
+  // Only a convenience guard for repeated submissions from this browser. The
+  // database unique index is the source of truth, so a cleared cache or a
+  // different device still cannot create a duplicate.
+  const readWaitlistCache = () => {
+    try {
+      const stored = JSON.parse(localStorage.getItem(WAITLIST_CACHE_KEY) || '[]');
+      if (!Array.isArray(stored)) return [];
+      return stored
+        .filter((value) => typeof value === 'string')
+        .map((value) => value.trim().toLowerCase())
+        .filter(Boolean);
+    } catch {
+      return [];
+    }
+  };
+
+  const rememberWaitlistEmail = (email) => {
+    try {
+      const stored = readWaitlistCache().filter((value) => value !== email);
+      stored.push(email);
+      localStorage.setItem(
+        WAITLIST_CACHE_KEY,
+        JSON.stringify(stored.slice(-WAITLIST_CACHE_LIMIT))
+      );
+    } catch {
+      // Private browsing or a full quota — the API still enforces uniqueness.
+    }
+  };
+
   $$('[data-signup]').forEach((form) => {
     const wrap = form.closest('.signup-wrap');
     const note = wrap?.querySelector('.form-note');
@@ -1058,6 +1090,27 @@
       if (!button || !defaultButton) return;
       button.innerHTML = defaultButton;
       button.disabled = false;
+    };
+
+    const showSuccess = () => {
+      form.classList.add('is-success');
+      wrap?.classList.add('is-success');
+      // Deliberately identical for new and existing addresses so the UI never
+      // reveals whether an email was already on the list.
+      setNote('You’re in. Keep an eye on your inbox — and your WhatsApp.');
+
+      if (button) {
+        button.innerHTML = '<span>You’re on the list</span><svg class="icon"><use href="#i-check"/></svg>';
+        button.disabled = true;
+      }
+      if (input) input.value = '';
+
+      resetTimer = setTimeout(() => {
+        restoreButton();
+        form.classList.remove('is-success');
+        wrap?.classList.remove('is-success');
+        setNote('');
+      }, 6000);
     };
 
     form.addEventListener('submit', async (e) => {
@@ -1088,8 +1141,17 @@
       }
 
       form.classList.remove('is-invalid');
-      form.dataset.submitting = 'true';
       clearTimeout(resetTimer);
+
+      const normalizedEmail = email.toLowerCase();
+
+      // Repeated submission from this browser: skip the request entirely.
+      if (readWaitlistCache().includes(normalizedEmail)) {
+        showSuccess();
+        return;
+      }
+
+      form.dataset.submitting = 'true';
       if (button) {
         button.disabled = true;
         button.innerHTML = '<span>Joining…</span>';
@@ -1115,33 +1177,8 @@
           throw error;
         }
 
-        form.classList.add('is-success');
-        wrap?.classList.add('is-success');
-        try {
-          const stored = JSON.parse(localStorage.getItem('dumpit_waitlist') || '[]');
-          const storedEmail = email.toLowerCase();
-          if (!stored.includes(storedEmail)) stored.push(storedEmail);
-          localStorage.setItem('dumpit_waitlist', JSON.stringify(stored));
-        } catch (err) { /* private browsing */ }
-
-        setNote(
-          data.alreadyRegistered
-            ? 'You’re already on the list — we’ll be in touch.'
-            : 'You’re in. Keep an eye on your inbox — and your WhatsApp.'
-        );
-
-        if (button) {
-          button.innerHTML = '<span>You’re on the list</span><svg class="icon"><use href="#i-check"/></svg>';
-          button.disabled = true;
-        }
-        if (input) input.value = '';
-
-        resetTimer = setTimeout(() => {
-          restoreButton();
-          form.classList.remove('is-success');
-          wrap?.classList.remove('is-success');
-          setNote('');
-        }, 6000);
+        rememberWaitlistEmail(normalizedEmail);
+        showSuccess();
       } catch (err) {
         form.classList.remove('is-success');
         wrap?.classList.remove('is-success');
@@ -1150,6 +1187,8 @@
           setNote('That took too long — one more try?');
         } else if (err.status === 429) {
           setNote('Too many tries — give it a minute.');
+        } else if (err.status === 503) {
+          setNote('The waitlist is busy right now — give it a moment and try again.');
         } else if (err.status === 400) {
           form.classList.add('is-invalid');
           setTimeout(() => form.classList.remove('is-invalid'), 450);
