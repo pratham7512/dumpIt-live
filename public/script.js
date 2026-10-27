@@ -294,34 +294,6 @@
   let chatRecordTimer = 0;
   let chatRun = 0;
   let chatInView = false;
-  let howInView = false;
-  let stepTimer = 0;
-  const mobileChat = window.matchMedia('(max-width: 760px)');
-
-  function isMobileChat() {
-    return mobileChat.matches;
-  }
-
-  function stopStepCycle() {
-    clearInterval(stepTimer);
-    stepTimer = 0;
-  }
-
-  function startStepCycle() {
-    if (
-      !howSteps.length ||
-      reducedMotion.matches ||
-      !howInView ||
-      document.hidden
-    ) return;
-    stopStepCycle();
-    let index = 0;
-    setStep(index);
-    stepTimer = setInterval(() => {
-      index = (index + 1) % howSteps.length;
-      setStep(index);
-    }, 3200);
-  }
 
   function clearChatTimers() {
     chatTimers.forEach(clearTimeout);
@@ -386,27 +358,14 @@
     }, 1000);
   }
 
-  function primeMobileChat() {
-    if (!chat) return;
-    stopChatCycle();
-    stopStepCycle();
-    chat.classList.remove('will-animate');
-    chat.classList.add('has-msgs');
-    chatMsgs.forEach((msg) => {
-      msg.classList.toggle('is-shown', msg.getAttribute('data-msg') !== 'typing');
-    });
-    setRecording(false);
-    if (recTimeEl) recTimeEl.textContent = '0:00';
-    scrollChatToBottom(false);
-  }
-
   function startChatCycle() {
-    if (!chat || isMobileChat() || reducedMotion.matches || !chatInView || document.hidden) return;
+    if (!chat || reducedMotion.matches || !chatInView || document.hidden) return;
     stopChatCycle();
     const run = chatRun;
     chat.classList.add('will-animate');
     chat.classList.remove('has-msgs');
     chatMsgs.forEach((msg) => msg.classList.remove('is-shown'));
+    howSteps.forEach((step) => step.classList.remove('is-live', 'is-done'));
     scrollChatToBottom(false);
     if (recTimeEl) recTimeEl.textContent = '0:00';
 
@@ -424,15 +383,17 @@
       Sound.wa('send');
       showChatMsg('voice');
     });
-    at(4680, () => setStep(1));
-    at(4830, () => showChatMsg('typing'));
+    at(4830, () => {
+      setStep(1);
+      showChatMsg('typing');
+    });
     at(6400, () => {
       hideChatMsg('typing');
       showChatMsg('filed');
       Sound.wa('receive');
     });
-    at(9600, () => setStep(2));
     at(9800, () => {
+      setStep(2);
       showChatMsg('ask');
       Sound.wa('send');
     });
@@ -462,54 +423,47 @@
   }
 
   if (chat) {
-    function showMobileStatic(completeSteps) {
-      primeMobileChat();
-      if (completeSteps) {
-        howSteps.forEach((step) => {
-          step.classList.remove('is-live');
-          step.classList.add('is-done');
-        });
-      }
-    }
-
-    // The conversation is a finished illustration at every width. Only the
-    // three-step highlight moves, so the phone never resets to an empty chat.
+    // Start as a finished illustration. The live demonstration takes over as
+    // soon as the phone is actually on screen.
     showStaticChat();
 
     const how = $('.how');
+    const chatTarget = $('.phone-plate') || how;
+
+    function enterChat() {
+      chatInView = true;
+      if (reducedMotion.matches) showStaticChat();
+      else startChatCycle();
+    }
+
+    function leaveChat() {
+      chatInView = false;
+      stopChatCycle();
+    }
 
     if ('IntersectionObserver' in window) {
-      if (how) {
-        const howObserver = new IntersectionObserver((entries) => {
-          howInView = entries[0]?.isIntersecting ?? false;
-          if (howInView) startStepCycle();
-          else stopStepCycle();
-        }, { threshold: 0.12 });
-        howObserver.observe(how);
+      if (chatTarget) {
+        const chatObserver = new IntersectionObserver((entries) => {
+          if (entries[0]?.isIntersecting) enterChat();
+          else leaveChat();
+        }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
+        chatObserver.observe(chatTarget);
       }
     } else {
-      howInView = true;
-      if (!reducedMotion.matches) startStepCycle();
+      enterChat();
     }
 
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        stopChatCycle();
-        stopStepCycle();
-      } else if (!reducedMotion.matches && howInView) {
-        startStepCycle();
-      }
+      if (document.hidden) stopChatCycle();
+      else if (chatInView) enterChat();
     });
 
-    const onChatLayout = () => {
-      stopStepCycle();
-      showStaticChat();
-      if (!reducedMotion.matches && howInView) startStepCycle();
+    const onReducedMotion = () => {
+      if (reducedMotion.matches) showStaticChat();
+      else if (chatInView) startChatCycle();
     };
-    if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', onChatLayout);
-    else reducedMotion.addListener?.(onChatLayout);
-    if (mobileChat.addEventListener) mobileChat.addEventListener('change', onChatLayout);
-    else mobileChat.addListener?.(onChatLayout);
+    if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', onReducedMotion);
+    else reducedMotion.addListener?.(onReducedMotion);
   }
 
   /* ---------- simple checkboxes ---------- */
@@ -852,6 +806,8 @@
     const nextBtn = $('[data-deck-next]', deck);
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const flatStack = window.matchMedia('(max-width: 840px)');
+    const mobileDeck = window.matchMedia('(max-width: 760px)');
+    const grid = $('.feature-stage-grid', deck);
     const baseRotations = [-1.2, .8, -.6, 1.1, -.9, .7];
     const features = notes.map((note, index) => ({
       note,
@@ -861,7 +817,9 @@
 
     let active = 0;
     let ready = false;
+    let carouselMode = false;
     let ticking = false;
+    let gridTicking = false;
     let layoutSyncing = false;
     let navTarget = null;
     let navSettleTimer = 0;
@@ -873,7 +831,7 @@
 
       entries.forEach((entry, i) => {
         const depth = i - index;
-        const scraped = depth < 0;
+        const scraped = !carouselMode && depth < 0;
         entry.classList.toggle('is-active', i === index);
         entry.classList.toggle('is-scraped', scraped);
         if (ready) {
@@ -884,12 +842,19 @@
           entry.inert = false;
           entry.removeAttribute('aria-hidden');
         }
-        if (!scraped && notes[i]) {
-          const rotation = flatStack.matches ? 0 : features[i].rotation + depth * .18;
-          notes[i].style.setProperty('--note-x', `${depth * stackGap}px`);
-          notes[i].style.setProperty('--note-y', `${depth * stackGap}px`);
-          notes[i].style.setProperty('--note-r', `${rotation}deg`);
-          notes[i].style.setProperty('--note-s', String(1 - depth * .008));
+        if (notes[i]) {
+          if (carouselMode) {
+            notes[i].style.removeProperty('--note-x');
+            notes[i].style.removeProperty('--note-y');
+            notes[i].style.removeProperty('--note-r');
+            notes[i].style.removeProperty('--note-s');
+          } else if (!scraped) {
+            const rotation = flatStack.matches ? 0 : features[i].rotation + depth * .18;
+            notes[i].style.setProperty('--note-x', `${depth * stackGap}px`);
+            notes[i].style.setProperty('--note-y', `${depth * stackGap}px`);
+            notes[i].style.setProperty('--note-r', `${rotation}deg`);
+            notes[i].style.setProperty('--note-s', String(1 - depth * .008));
+          }
         }
       });
 
@@ -952,7 +917,64 @@
       deck.removeAttribute('data-deck-active');
     }
 
+    function carouselIndex() {
+      if (!grid) return active;
+      const gridLeft = grid.getBoundingClientRect().left;
+      let best = 0;
+      let bestDistance = Infinity;
+      entries.forEach((entry, i) => {
+        const distance = Math.abs(entry.getBoundingClientRect().left - gridLeft);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          best = i;
+        }
+      });
+      return best;
+    }
+
+    function scrollToCard(index, behavior) {
+      if (!grid) return;
+      const target = clamp(index, 0, entries.length - 1);
+      const gridRect = grid.getBoundingClientRect();
+      const entryRect = entries[target].getBoundingClientRect();
+      const padding = parseFloat(getComputedStyle(grid).paddingLeft) || 0;
+      const left = grid.scrollLeft + entryRect.left - gridRect.left - padding;
+      grid.scrollTo({ left: Math.max(0, left), behavior });
+    }
+
+    function syncCarousel() {
+      if (!carouselMode) return;
+      const next = carouselIndex();
+      if (next !== active) paint(next);
+    }
+
+    function onCarouselScroll() {
+      if (!carouselMode || gridTicking) return;
+      gridTicking = true;
+      requestAnimationFrame(() => {
+        gridTicking = false;
+        syncCarousel();
+      });
+    }
+
     function layout() {
+      const useCarousel = mobileDeck.matches;
+      const modeChanged = carouselMode !== useCarousel;
+
+      if (useCarousel) {
+        // Phones get a swipeable deck instead of a long pinned scroll scene.
+        carouselMode = true;
+        deck.classList.remove('is-ready');
+        deck.classList.add('is-carousel');
+        setStatic();
+        paint(active);
+        if (modeChanged) requestAnimationFrame(() => scrollToCard(active, 'auto'));
+        return;
+      }
+
+      carouselMode = false;
+      deck.classList.remove('is-carousel');
+
       // Pinned deck needs enough vertical room for the note and its preview.
       // Very short screens get the readable, stacked feature cards instead.
       if (motion.matches || window.innerHeight < 620) {
@@ -965,11 +987,17 @@
       layoutSyncing = true;
       syncFromScroll();
       layoutSyncing = false;
+      if (modeChanged) requestAnimationFrame(() => paint(active));
     }
 
     function goTo(index) {
-      if (!ready) return;
       const target = clamp(index, 0, entries.length - 1);
+      if (carouselMode) {
+        scrollToCard(target, motion.matches ? 'auto' : 'smooth');
+        paint(target);
+        return;
+      }
+      if (!ready) return;
       const total = deck.offsetHeight - stage.offsetHeight;
       const top = deck.getBoundingClientRect().top + window.scrollY;
       const pos = top + total * ((target + .5) / entries.length);
@@ -991,6 +1019,7 @@
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', layout);
+    grid?.addEventListener('scroll', onCarouselScroll, { passive: true });
     if (motion.addEventListener) motion.addEventListener('change', layout);
     else motion.addListener?.(layout);
 
