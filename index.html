@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>document.documentElement.classList.add('js'); if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('notes-intro');</script>
+  <title>dumpit — Say it out loud. It takes note.</title>
+  <meta name="description" content="Send dumpit a voice note on WhatsApp. It comes back as clean notes, tasks, reminders and lists — already filed, always searchable." />
+  <meta name="theme-color" content="#ffffff" />
+  <meta property="og:title" content="dumpit — Say it out loud. It takes note." />
+  <meta property="og:description" content="A voice-first notebook for people with too much on their mind. One voice note becomes notes, tasks and lists, already in order." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="dumpit" />
+  <meta property="og:image" content="assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="dumpit — Say it out loud. It takes note." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="dumpit — Say it out loud. It takes note." />
+  <meta name="twitter:description" content="A voice-first notebook for people with too much on their mind. One voice note becomes notes, tasks and lists, already in order." />
+  <meta name="twitter:image" content="assets/og.png" />
+  <meta name="twitter:image:alt" content="dumpit — Say it out loud. It takes note." />
+  <link rel="icon" href="assets/dumpit.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-dumpit-mark" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="9" fill="currentColor" />
+      <path d="M16 7.5v13.2m0 0 5.6-5.6M16 20.7l-5.6-5.6" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx="16" cy="26" r="1.7" fill="#f3df55" />
+    </symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.54.84l9.2-6.16a1 1 0 0 0 0-1.67L9.54 4.66A1 1 0 0 0 8 5.5Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 6.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H9l2 2h7.5A2.5 2.5 0 0 1 21 9.5v7a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 16.5z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="10.5" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 1.9-1.4L21 7H6"/><circle cx="9.5" cy="20" r="1.2"/><circle cx="17.5" cy="20" r="1.2"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M6 3.5h8l4 4v13H6z"/><path d="M14 3.5v4h4M9 12h6M9 16h4"/></symbol>
+    <symbol id="i-sort" viewBox="0 0 24 24"><path d="M8 5v14M5 16l3 3 3-3M16 19V5M13 8l3-3 3 3"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M8.6 3.5 6.2 4.8a2 2 0 0 0-1 2.2 17 17 0 0 0 11.8 11.8 2 2 0 0 0 2.2-1l1.3-2.4a1.2 1.2 0 0 0-.6-1.7l-3-1.2a1.2 1.2 0 0 0-1.3.4l-1 1.2a12 12 0 0 1-4.4-4.4l1.2-1a1.2 1.2 0 0 0 .4-1.3L10.3 4a1.2 1.2 0 0 0-1.7-.5Z"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8.5h3l1.5-2h7L17 8.5h3A1.5 1.5 0 0 1 21.5 10v8A1.5 1.5 0 0 1 20 19.5H4A1.5 1.5 0 0 1 2.5 18v-8A1.5 1.5 0 0 1 4 8.5Z"/><circle cx="12" cy="14" r="3.3"/></symbol>
+    <symbol id="i-apple" viewBox="0 0 24 24"><path d="M17.1 20.3c-1 .9-2 .8-3.1.4-1.1-.5-2.1-.5-3.2 0-1.4.6-2.2.4-3.1-.4C2.8 15.3 3.5 7.6 9 7.3c1.4.1 2.3.7 3.1.8.9-.2 2-.9 3.2-.8 1.5.1 2.6.7 3.4 1.8-3.1 1.9-2.6 5.8.5 7-.6 1.7-1.4 3.2-2.1 4.2ZM12 7.3c-.1-2.2 1.7-4.1 3.7-4.3.3 2.6-2.3 4.5-3.7 4.3Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2.5 8.6a15 15 0 0 1 19 0M5.5 12.1a10.5 10.5 0 0 1 13 0M8.5 15.6a6 6 0 0 1 7 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-signal" viewBox="0 0 24 24"><path d="M4 19v-2M8 19v-5M12 19V9M16 19V5"/></symbol>
+    <symbol id="i-control" viewBox="0 0 24 24"><circle cx="13" cy="7" r="2.7"/><circle cx="9" cy="17" r="2.7"/><path d="M3 7h5.3M15.7 7H21M3 17h3M11.7 17H21"/></symbol>
+    <symbol id="i-doodle-heart" viewBox="0 0 24 24"><path d="M12.1 20.1C9.8 18.4 4 14.9 4 10.1 4 6.7 6.2 4.8 8.6 4.8c1.7 0 2.8 1 3.4 2.1.7-1.2 1.8-2.1 3.4-2.1 2.4 0 4.6 1.9 4.6 5.3 0 4.8-5.8 8.3-7.9 10Z"/></symbol>
+    <symbol id="i-doodle-arrow" viewBox="0 0 32 32"><path d="M9 4.5c-3.6 6.9-2.5 13.6 4.7 18.9 3.5 2.6 7.9 3.4 13.2 2.4M21.6 21.6l5.4 4.1-5.7 3.6"/></symbol>
+    <symbol id="i-doodle-star" viewBox="0 0 24 24"><path d="m12.2 3.4 2 6.2 6.4.2-5.2 3.9 1.8 6.3-5.2-3.8-5.3 3.9 1.9-6.4-5.1-4 6.4-.1Z"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24"><rect x="2.8" y="6.2" width="12.4" height="11.6" rx="2.4"/><path d="m15.2 10.3 6-3.2v9.8l-6-3.2"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M11 5 6.6 9H3v6h3.6L11 19z"/><path d="M15 9.4a3.7 3.7 0 0 1 0 5.2M18 6.8a7.3 7.3 0 0 1 0 10.4"/></symbol>
+    <symbol id="i-volume-off" viewBox="0 0 24 24"><path d="M11 5 6.6 9H3v6h3.6L11 19z"/><path d="m15.5 9.5 5 5m0-5-5 5"/></symbol>
+  </svg>
+
+  <header class="site-header" id="top">
+    <div class="container masthead">
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#app">The app</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="brand" href="#top" aria-label="dumpit home"><span>dumpit</span></a>
+      <div class="header-tools">
+        <a class="btn btn--sm header-cta" href="#join">Get early access <svg class="icon"><use href="#i-arrow-up-right"/></svg></a>
+        <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav class="mobile-menu-links" aria-label="Mobile navigation">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#app">The app</a>
+      <a href="#voices">Kind words</a>
+      <a href="#faq">FAQ</a>
+      <a href="#join">Get early access</a>
+    </nav>
+    <div class="mobile-menu-foot">
+      <a class="text-link" href="mailto:hello@dumpit.app">hello@dumpit.app <svg class="icon"><use href="#i-arrow-up-right"/></svg></a>
+      <button class="sound-toggle sound-toggle--menu" type="button" data-sound-toggle aria-pressed="true" aria-label="Mute sound effects">
+        <svg class="icon sound-on" aria-hidden="true"><use href="#i-volume"/></svg>
+        <svg class="icon sound-off" aria-hidden="true"><use href="#i-volume-off"/></svg>
+        <span class="sound-toggle-text">Sound on</span>
+      </button>
+    </div>
+  </div>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-stage">
+        <div class="hero-wall" aria-hidden="true"></div>
+
+        <div class="hero-notes" data-notes aria-hidden="true">
+          <div class="sticky-note note--lg note--butter n-groceries" data-note>
+            <span class="note-tape tape--wide" aria-hidden="true"></span>
+            <div class="note-paper">
+              <p class="note-lines">
+                <span><span class="note-box is-done"></span>oat milk</span>
+                <span><span class="note-box is-done"></span>avocados</span>
+                <span><span class="note-box"></span>coffee</span>
+                <span class="note-under">the good bread</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="sticky-note note--md note--pink pen--blue n-dentist" data-note>
+            <span class="note-tape" aria-hidden="true"></span>
+            <div class="note-paper note-paper--fold-right">
+              <p class="note-lines">
+                <span class="note-under">call the dentist</span>
+                <span>thu <b>10:00</b></span>
+                <span class="note-emphasis">!!</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="sticky-note note--sm note--cream note--loose n-standup" data-note>
+            <span class="note-tape tape--corner" aria-hidden="true"></span>
+            <div class="note-paper">
+              <p class="note-lines">
+                <span><span class="note-box"></span>q3 deck</span>
+                <span>standup 9:30</span>
+                <span class="note-strike">inbox zero</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="sticky-note note--sm note--sage n-flowers" data-note>
+            <span class="note-tape tape--wide" aria-hidden="true"></span>
+            <div class="note-paper">
+              <p class="note-lines">
+                <span>buy flowers</span>
+                <span>for mom</span>
+              </p>
+              <svg class="note-heart" viewBox="0 0 24 24"><use href="#i-doodle-heart"/></svg>
+            </div>
+          </div>
+
+          <div class="sticky-note note--sm note--blue pen--blue n-tuesdays" data-note>
+            <span class="note-tape tape--corner" aria-hidden="true"></span>
+            <div class="note-paper">
+              <p class="note-lines">
+                <span>the thing</span>
+                <span>about</span>
+                <span><span class="note-circle">tuesdays</span>?</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="sticky-note note--sm note--pink n-fine" data-note>
+            <span class="note-tape" aria-hidden="true"></span>
+            <div class="note-paper">
+              <p class="note-lines">
+                <span>you’re</span>
+                <span>doing <span class="note-circle">fine</span></span>
+              </p>
+              <svg class="note-star" viewBox="0 0 24 24"><use href="#i-doodle-star"/></svg>
+            </div>
+          </div>
+
+          <div class="sticky-note note--lg note--butter n-podcast" data-note>
+            <span class="note-tape tape--wide" aria-hidden="true"></span>
+            <div class="note-paper">
+              <p class="note-lines">
+                <span>podcast idea —</span>
+                <span class="note-under">the cost of free</span>
+                <span class="note-small">ep. 04?</span>
+              </p>
+              <svg class="note-star" viewBox="0 0 24 24"><use href="#i-doodle-star"/></svg>
+            </div>
+          </div>
+
+          <div class="sticky-note note--md note--cream pen--blue note--loose n-flights" data-note>
+            <span class="note-tape tape--right" aria-hidden="true"></span>
+            <div class="note-paper note-paper--fold-right">
+              <p class="note-lines">
+                <span>book flights</span>
+                <span>to <span class="note-circle">lisbon</span></span>
+                <span class="note-small">window seat</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="sticky-note note--sm note--peach n-callmom" data-note>
+            <span class="note-tape" aria-hidden="true"></span>
+            <div class="note-paper note-paper--fold">
+              <p class="note-lines">
+                <span>call mom</span>
+                <span>back</span>
+              </p>
+              <svg class="note-heart" viewBox="0 0 24 24"><use href="#i-doodle-heart"/></svg>
+            </div>
+          </div>
+
+          <div class="sticky-note note--sm note--butter n-lease" data-note>
+            <span class="note-tape tape--corner" aria-hidden="true"></span>
+            <div class="note-paper">
+              <p class="note-lines">
+                <span>lease ends</span>
+                <span class="note-under">aug 31</span>
+                <span class="note-small">ask about parking</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="sticky-note note--sm note--sage n-ideas" data-note>
+            <span class="note-tape" aria-hidden="true"></span>
+            <div class="note-paper">
+              <p class="note-lines">
+                <span>out of</span>
+                <span>my head</span>
+              </p>
+              <svg class="note-star" viewBox="0 0 24 24"><use href="#i-doodle-star"/></svg>
+            </div>
+          </div>
+
+          <div class="sticky-note note--wide note--butter n-scroll" data-note>
+            <span class="note-tape tape--wide" aria-hidden="true"></span>
+            <div class="note-paper">
+              <p class="note-lines">
+                <span>psst — tap a note.</span>
+                <span class="note-small">it comes back</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-core">
+          <h1 id="hero-title" class="hero-wordmark">dumpit</h1>
+          <p class="hero-tagline">Say it out loud. <em>It takes note.</em></p>
+          <p class="hero-sub">Voice notes on WhatsApp, filed into tidy tasks, reminders, lists and notes. No folders, no blank page.</p>
+
+          <div class="signup-wrap">
+            <form class="signup" data-signup novalidate>
+              <label class="sr-only" for="email-hero">Email address</label>
+              <input id="email-hero" type="email" name="email" placeholder="you@email.com" autocomplete="email" required />
+              <button class="text-submit" type="submit"><span>Get early access</span><svg class="icon"><use href="#i-arrow"/></svg></button>
+            </form>
+            <p class="form-note" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="premise" id="premise" aria-labelledby="premise-title">
+      <div class="container premise-grid">
+        <div class="premise-copy">
+          <h2 id="premise-title" data-reveal style="--reveal-delay:80ms">Thinking is fast. <br />Typing is slow. <br />Talking is <em>both.</em></h2>
+          <p class="premise-foot" data-reveal style="--reveal-delay:160ms">For ideas that arrive in the shower, on a walk, or three minutes before sleep. dumpit meets you there.</p>
+          <ul class="premise-tags" data-reveal style="--reveal-delay:220ms" aria-label="What dumpit files">
+            <li><i class="cat-mark cat-work"></i>Tasks</li>
+            <li><i class="cat-mark cat-personal"></i>Reminders</li>
+            <li><i class="cat-mark cat-ideas"></i>Ideas</li>
+            <li><i class="cat-mark cat-study"></i>Notes</li>
+          </ul>
+        </div>
+        <div class="premise-art" data-reveal style="--reveal-delay:120ms">
+          <div class="premise-scrap premise-scrap--a" aria-hidden="true">
+            <span>ring the dentist</span>
+            <em>thursday, 10</em>
+          </div>
+          <div class="premise-scrap premise-scrap--b" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><use href="#i-doodle-star"/></svg>
+            <span>the cost of free</span>
+          </div>
+          <aside class="premise-note">
+            <div class="premise-voice" aria-hidden="true">
+              <span class="premise-play"><svg class="icon"><use href="#i-play"/></svg></span>
+              <div class="wave" data-wave data-bars="24"></div>
+              <span class="premise-voice-time">0:12</span>
+            </div>
+            <blockquote>Voice is the shortest distance between a thought and somewhere safe.</blockquote>
+            <div class="premise-note-foot">
+              <span><i class="cat-mark cat-ideas"></i>Filed under Ideas</span>
+              <span>9:41</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="how" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <header class="chapter-head">
+          <div class="chapter-title-row">
+            <h2 id="how-title" data-reveal style="--reveal-delay:60ms">One voice note. <br />Then it’s <em>out of your head.</em></h2>
+            <p class="chapter-lede" data-reveal style="--reveal-delay:120ms">No forms. No folders. No blank page. Just talk like you’re leaving yourself a message.</p>
+          </div>
+        </header>
+
+        <div class="how-grid">
+          <div class="how-steps">
+            <article class="how-step" data-how-step="0" data-reveal>
+              <span class="how-num">#1</span>
+              <div>
+                <h3><span class="how-title">Dump it</span></h3>
+                <p>Send a voice note to dumpit on WhatsApp. A passing thought, a messy brain dump, a forty-minute lecture. Say it however it comes out.</p>
+              </div>
+            </article>
+            <article class="how-step" data-how-step="1" data-reveal style="--reveal-delay:80ms">
+              <span class="how-num">#2</span>
+              <div>
+                <h3><span class="how-title">dumpit makes sense of it</span></h3>
+                <p>In seconds, dumpit transcribes the note, pulls out every task, date, ingredient and idea, then files it under the right heading.</p>
+              </div>
+            </article>
+            <article class="how-step" data-how-step="2" data-reveal style="--reveal-delay:160ms">
+              <span class="how-num">#3</span>
+              <div>
+                <h3><span class="how-title">Find it later</span></h3>
+                <p>Everything waits in a quiet, searchable notebook. Tasks, reminders, shopping lists and study notes — already in order.</p>
+              </div>
+            </article>
+          </div>
+
+          <svg class="how-doodle" viewBox="0 0 170 96" fill="none" aria-hidden="true">
+            <path d="M3 24c27 3 49 12 64 28 9 11 22 18 42 21" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-dasharray="2.5 6"/>
+            <path d="m100 65 11 8-9 9" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 70c7-6 15-8 22-6M29 79c6-4 12-5 18-4" stroke="currentColor" stroke-width="1.05" stroke-linecap="round" opacity=".62"/>
+            <path d="M18 9v10M13 14h10" stroke="currentColor" stroke-width="1.05" stroke-linecap="round" opacity=".5"/>
+          </svg>
+
+          <figure class="phone-plate" data-reveal style="--reveal-delay:120ms">
+            <div class="phone-stage" role="group" aria-label="A WhatsApp conversation with dumpit">
+              <div class="phone">
+                <div class="phone-screen">
+                  <div class="phone-status" aria-hidden="true">
+                    <span class="phone-time">9:41</span>
+                    <span class="phone-island"></span>
+                    <span class="phone-status-icons">
+                      <svg class="icon"><use href="#i-signal"/></svg>
+                      <svg class="icon"><use href="#i-wifi"/></svg>
+                      <span class="phone-battery"><i></i></span>
+                    </span>
+                  </div>
+
+                  <div class="wa-topbar" aria-hidden="true">
+                    <svg class="icon wa-back"><use href="#i-chevron-left"/></svg>
+                    <span class="wa-avatar"><svg class="icon"><use href="#i-dumpit-mark"/></svg></span>
+                    <div class="wa-contact"><b>dumpit</b><small>online</small></div>
+                    <div class="wa-top-actions">
+                      <svg class="icon wa-video"><use href="#i-video"/></svg>
+                      <svg class="icon"><use href="#i-phone"/></svg>
+                    </div>
+                  </div>
+
+                  <div class="wa-chat" data-chat>
+                    <div class="wa-system">Messages are end-to-end encrypted</div>
+                    <div class="wa-day">TODAY</div>
+
+                    <div class="wa-row wa-row--in wa-intro" data-wa-intro>
+                      <div class="wa-bubble wa-bubble--in">
+                        <p>Send me a voice note. I’ll sort it from there.</p>
+                      </div>
+                    </div>
+
+                    <div class="wa-row wa-row--out msg" data-msg="voice">
+                      <div class="wa-bubble wa-bubble--out">
+                        <div class="wa-voice" data-audio data-duration="4" role="button" tabindex="0" aria-label="Play voice note demo">
+                          <span class="wa-wave-play"><svg class="icon"><use href="#i-play"/></svg></span>
+                          <div class="wave wave--wa" data-wave data-bars="27"></div>
+                          <span class="wa-wave-time">0:04</span>
+                          <svg class="icon wa-voice-mic" aria-hidden="true"><use href="#i-mic"/></svg>
+                        </div>
+                        <div class="wa-meta"><span>9:41</span><span class="wa-ticks">✓✓</span></div>
+                      </div>
+                    </div>
+
+                    <div class="wa-row wa-row--in wa-row--typing msg" data-msg="typing">
+                      <div class="wa-bubble wa-bubble--in wa-typing" aria-label="dumpit is typing"><i></i><i></i><i></i></div>
+                    </div>
+
+                    <div class="wa-row wa-row--in msg" data-msg="filed">
+                      <div class="wa-bubble wa-bubble--in">
+                        <p class="wa-lead">Done. Here’s what I filed:</p>
+                        <div class="wa-file">
+                          <span class="wa-file-icon"><svg class="icon"><use href="#i-check"/></svg></span>
+                          <div><b>Send Q3 deck to Maya</b><small>Task · Thursday</small></div>
+                          <em class="wa-cat">Work</em>
+                        </div>
+                        <div class="wa-file">
+                          <span class="wa-file-icon"><svg class="icon"><use href="#i-cart"/></svg></span>
+                          <div><b>3 items to Shopping</b><small>Oat milk · avocados · coffee</small></div>
+                          <em class="wa-cat">List</em>
+                        </div>
+                        <div class="wa-file wa-file--study">
+                          <span class="wa-file-icon"><svg class="icon"><use href="#i-note"/></svg></span>
+                          <div><b>Behavioral Economics — L04</b><small>Summary + 6 key points</small></div>
+                          <em class="wa-cat">Study</em>
+                        </div>
+                        <div class="wa-file">
+                          <span class="wa-file-icon"><svg class="icon"><use href="#i-bell"/></svg></span>
+                          <div><b>Call the dentist</b><small>Reminder · Thursday, 10:00</small></div>
+                          <em class="wa-cat">Personal</em>
+                        </div>
+                        <div class="wa-meta wa-meta--in"><span>9:41</span></div>
+                      </div>
+                    </div>
+
+                    <div class="wa-row wa-row--out msg" data-msg="ask">
+                      <div class="wa-bubble wa-bubble--out wa-bubble--short">find my lecture notes<span class="wa-meta wa-meta--inline">9:42 <span class="wa-ticks">✓✓</span></span></div>
+                    </div>
+
+                    <div class="wa-row wa-row--in msg" data-msg="found">
+                      <div class="wa-bubble wa-bubble--in">
+                        <div class="wa-found">
+                          <span class="wa-file-icon"><svg class="icon"><use href="#i-note"/></svg></span>
+                          <div><b>Behavioral Economics — L04</b><small>Summary + 6 key points</small></div>
+                        </div>
+                        <div class="wa-meta wa-meta--in"><span>9:42</span></div>
+                      </div>
+                    </div>
+
+                    <div class="wa-row wa-row--in msg" data-msg="reminder">
+                      <div class="wa-bubble wa-bubble--in wa-bubble--short">Reminder set for Thursday, 9:00. I’ll ping you here.<span class="wa-meta wa-meta--inline">9:42</span></div>
+                    </div>
+                  </div>
+
+                  <div class="wa-input" aria-hidden="true">
+                    <span class="wa-plus"><svg class="icon"><use href="#i-plus"/></svg></span>
+                    <div class="wa-field">Message <span class="wa-field-emoji">☺</span></div>
+                    <svg class="icon wa-camera"><use href="#i-camera"/></svg>
+                    <span class="wa-mic"><svg class="icon"><use href="#i-mic"/></svg></span>
+                    <div class="wa-recording">
+                      <span class="wa-rec-dot"></span>
+                      <span class="wa-rec-time" data-rec-time>0:00</span>
+                      <span class="wa-rec-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                      <span class="wa-rec-hint">Slide to cancel</span>
+                      <span class="wa-rec-stop"><svg class="icon"><use href="#i-mic"/></svg></span>
+                    </div>
+                  </div>
+                  <div class="phone-home" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+            <button class="sound-toggle" type="button" data-sound-toggle aria-pressed="true" aria-label="Mute sound effects">
+              <svg class="icon sound-on" aria-hidden="true"><use href="#i-volume"/></svg>
+              <svg class="icon sound-off" aria-hidden="true"><use href="#i-volume-off"/></svg>
+              <span class="sound-toggle-text">Sound on</span>
+            </button>
+            <figcaption class="sr-only">dumpit files a voice note into tasks, a shopping list and a study note, then finds the lecture note and confirms a reminder.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features" aria-labelledby="features-title">
+      <div class="container">
+        <header class="chapter-head">
+          <div class="chapter-title-row">
+            <h2 id="features-title" data-reveal style="--reveal-delay:60ms">A place for the <em>half&#8209;formed.</em></h2>
+            <p class="chapter-lede" data-reveal style="--reveal-delay:120ms">One sentence in. A task, a list, a reminder or a clean note out.</p>
+          </div>
+        </header>
+
+        <div class="feature-deck" data-feature-deck>
+          <div class="feature-stage">
+            <div class="feature-stage-head">
+              <div class="stage-context" aria-hidden="true">
+                <span class="stage-kicker">What it does</span>
+                <span class="stage-index" data-deck-index>01</span>
+                <span class="stage-title" data-deck-title>Filed without thinking</span>
+              </div>
+              <div class="deck-tools">
+                <button class="deck-step deck-prev" type="button" data-deck-prev aria-label="Previous feature">
+                  <svg class="icon"><use href="#i-chevron-down"/></svg>
+                </button>
+                <button class="deck-step deck-next" type="button" data-deck-next aria-label="Next feature">
+                  <svg class="icon"><use href="#i-chevron-down"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="feature-stage-grid">
+              <article class="feature-entry is-active" data-feature-entry style="--i:0">
+                <div class="feature-note note--butter" data-feature-note>
+                  <span class="feature-tape" aria-hidden="true"></span>
+                  <svg class="feature-doodle" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-doodle-star"/></svg>
+                  <div class="feature-note-body">
+                    <h3>Filed without thinking</h3>
+                    <p>Work, study, personal, ideas — dumpit hears the shape of a thought and labels it. Your only job is to talk.</p>
+                  </div>
+                </div>
+                <div class="feature-preview">
+                  <p class="preview-heading">Filed this morning</p>
+                  <div class="feature-preview-ui">
+                    <div class="ledger">
+                      <div class="ledger-row"><span class="ledger-folder"><i class="cat-mark cat-work"></i>Work</span><span class="ledger-title">Q3 launch — kickoff call</span></div>
+                      <div class="ledger-row"><span class="ledger-folder"><i class="cat-mark cat-study"></i>Study</span><span class="ledger-title">Behavioral economics — L04</span></div>
+                      <div class="ledger-row"><span class="ledger-folder"><i class="cat-mark cat-ideas"></i>Ideas</span><span class="ledger-title">The Cost of Free — podcast</span></div>
+                      <div class="ledger-row"><span class="ledger-folder"><i class="cat-mark cat-personal"></i>Personal</span><span class="ledger-title">Dentist, passport, Sunday call</span></div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="feature-entry" data-feature-entry style="--i:1">
+                <div class="feature-note note--pink" data-feature-note>
+                  <span class="feature-tape" aria-hidden="true"></span>
+                  <svg class="feature-doodle" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-doodle-heart"/></svg>
+                  <div class="feature-note-body">
+                    <h3>Tasks, pulled from thin air</h3>
+                    <p>Say “remind me to…” and it becomes a real task with a date, a time and a place. Nothing gets lost between saying and doing.</p>
+                  </div>
+                </div>
+                <div class="feature-preview">
+                  <p class="preview-heading">This week</p>
+                  <div class="feature-preview-ui">
+                    <div class="task-visual">
+                      <button class="check-row is-done" type="button" data-toggle-check aria-pressed="true">
+                        <span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span>
+                        <span class="check-label">Renew passport</span><em class="check-meta">Done</em>
+                      </button>
+                      <button class="check-row" type="button" data-toggle-check aria-pressed="false">
+                        <span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span>
+                        <span class="check-label">Send Q3 deck to Maya</span><em class="check-meta">Thu</em>
+                      </button>
+                      <button class="check-row" type="button" data-toggle-check aria-pressed="false">
+                        <span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span>
+                        <span class="check-label">Book the design review</span><em class="check-meta">Mon</em>
+                      </button>
+                      <button class="check-row" type="button" data-toggle-check aria-pressed="false">
+                        <span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span>
+                        <span class="check-label">Pick up the dry cleaning</span><em class="check-meta">Fri</em>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="feature-entry" data-feature-entry style="--i:2">
+                <div class="feature-note note--sage" data-feature-note>
+                  <span class="feature-tape" aria-hidden="true"></span>
+                  <div class="feature-note-body">
+                    <h3>Reminders that come back</h3>
+                    <p>A nudge on WhatsApp — where you’ll actually see it — not another app to ignore. It keeps the promise you made to yourself.</p>
+                  </div>
+                </div>
+                <div class="feature-preview">
+                  <p class="preview-heading">Thursday, 10:00</p>
+                  <div class="feature-preview-ui">
+                    <div class="missive">
+                      <p class="missive-meta"><i></i>dumpit · WhatsApp</p>
+                      <p class="missive-title">Time to call the dentist.</p>
+                      <p class="missive-body">You asked for a nudge before the appointment.</p>
+                      <div class="missive-detail">
+                        <span>Thu 10:00</span>
+                        <span>Dentist · 12 Oak St</span>
+                      </div>
+                      <div class="missive-actions"><span>Snooze 1h</span><span>Mark done</span></div>
+                      <span class="missive-time">9:41 AM</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="feature-entry" data-feature-entry style="--i:3">
+                <div class="feature-note note--blue" data-feature-note>
+                  <span class="feature-tape" aria-hidden="true"></span>
+                  <svg class="feature-doodle" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-doodle-star"/></svg>
+                  <div class="feature-note-body">
+                    <h3>Lists that build themselves</h3>
+                    <p>Say the ingredients; the list appears. Add, tick and share it without opening a notes app in the aisle.</p>
+                  </div>
+                </div>
+                <div class="feature-preview">
+                  <p class="preview-heading">Shopping</p>
+                  <div class="feature-preview-ui">
+                    <div class="shop-visual">
+                      <div class="shop-grid">
+                        <button class="shop-item is-done" type="button" data-toggle-check aria-pressed="true"><span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span><span>Oat milk</span><em>×2</em></button>
+                        <button class="shop-item" type="button" data-toggle-check aria-pressed="false"><span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span><span>Avocados</span><em>×3</em></button>
+                        <button class="shop-item" type="button" data-toggle-check aria-pressed="false"><span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span><span>Coffee beans</span><em>1 bag</em></button>
+                        <button class="shop-item" type="button" data-toggle-check aria-pressed="false"><span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span><span>Sourdough</span><em>1</em></button>
+                        <button class="shop-item is-done" type="button" data-toggle-check aria-pressed="true"><span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span><span>Lemons</span><em>×4</em></button>
+                        <button class="shop-item" type="button" data-toggle-check aria-pressed="false"><span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span><span>Eggs</span><em>×6</em></button>
+                        <button class="shop-item" type="button" data-toggle-check aria-pressed="false"><span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span><span>Olive oil</span><em>1</em></button>
+                        <button class="shop-item" type="button" data-toggle-check aria-pressed="false"><span class="check-box"><svg class="icon"><use href="#i-check"/></svg></span><span>Tomatoes</span><em>×4</em></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="feature-entry" data-feature-entry style="--i:4">
+                <div class="feature-note note--peach" data-feature-note>
+                  <span class="feature-tape" aria-hidden="true"></span>
+                  <div class="feature-note-body">
+                    <h3>Study notes, already studied</h3>
+                    <p>Every lecture gets a transcript, a summary and the key terms worth remembering. The reading is still yours; the tidying is ours.</p>
+                  </div>
+                </div>
+                <div class="feature-preview">
+                  <p class="preview-heading">Lecture 04</p>
+                  <div class="feature-preview-ui">
+                    <div class="study-visual">
+                      <p class="study-title">Behavioral Economics</p>
+                      <div class="study-points">
+                        <div><p>Defaults do most of the deciding.</p></div>
+                        <div><p>Losses feel twice as loud as gains.</p></div>
+                        <div><p>Small friction beats big persuasion.</p></div>
+                        <div><p>Framing changes the choice.</p></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="feature-entry" data-feature-entry style="--i:5">
+                <div class="feature-note note--cream" data-feature-note>
+                  <span class="feature-tape" aria-hidden="true"></span>
+                  <svg class="feature-doodle" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-doodle-heart"/></svg>
+                  <div class="feature-note-body">
+                    <h3>Search by the gist</h3>
+                    <p>Ask in plain words. dumpit finds the note — even if you don’t remember the words you used. Meaning, not exact phrases.</p>
+                  </div>
+                </div>
+                <div class="feature-preview">
+                  <p class="preview-heading">Search</p>
+                  <div class="feature-preview-ui">
+                    <div class="search-visual">
+                      <div class="search-line">
+                        <svg class="icon"><use href="#i-search"/></svg>
+                        <span class="search-query" data-typewriter>that podcast idea about pricing</span>
+                        <span class="search-caret"></span>
+                      </div>
+                      <div class="search-results">
+                        <div class="search-result">
+                          <span class="search-cat">Ideas</span>
+                          <div><b>The Cost of Free — podcast</b><small>“Pricing, free tiers, and why free isn’t…”</small></div>
+                          <svg class="icon"><use href="#i-arrow-up-right"/></svg>
+                        </div>
+                        <div class="search-result search-result--faint">
+                          <span class="search-cat">Work</span>
+                          <div><b>Beta pricing — early thoughts</b><small>“Charge from day one. Keep the beta…”</small></div>
+                        </div>
+                        <div class="search-result search-result--faint">
+                          <span class="search-cat">Personal</span>
+                          <div><b>Pricing podcast — follow up</b><small>“Free tier idea from the walk…”</small></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="deck-foot">
+              <div class="deck-meter" data-deck-meter aria-hidden="true">
+                <span class="is-active"></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <span class="deck-hint" aria-hidden="true">Scroll to move through</span>
+            </div>
+            <p class="sr-only" aria-live="polite" data-deck-live></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="app-section" id="app" aria-labelledby="app-title">
+      <div class="container">
+        <header class="chapter-head">
+          <div class="chapter-title-row">
+            <h2 id="app-title" data-reveal style="--reveal-delay:60ms">Your notes, finally <em>in&nbsp;order.</em></h2>
+            <p class="chapter-lede" data-reveal style="--reveal-delay:120ms">Every dump, transcript, task and list — in one calm place on the web and on your Mac.</p>
+          </div>
+        </header>
+
+        <div class="mac-stage" data-reveal>
+          <div class="mac-crop">
+            <div class="mac-frame">
+              <div class="mac-bezel">
+                <span class="mac-notch" aria-hidden="true"><span class="mac-camera"></span></span>
+                <div class="mac-screen">
+                  <div class="mac-menubar" aria-hidden="true">
+                    <div class="mac-menubar-left">
+                      <svg class="icon mac-apple"><use href="#i-apple"/></svg>
+                      <b>dumpit</b>
+                      <span>File</span>
+                      <span>Edit</span>
+                      <span>View</span>
+                      <span>Window</span>
+                    </div>
+                    <div class="mac-menubar-right">
+                      <svg class="icon"><use href="#i-wifi"/></svg>
+                      <span class="mac-battery"><i></i></span>
+                      <svg class="icon"><use href="#i-search"/></svg>
+                      <svg class="icon"><use href="#i-control"/></svg>
+                      <span class="mac-clock">Mon 9:41</span>
+                    </div>
+                  </div>
+                  <div class="mac-desktop">
+                    <div class="app-window" data-macapp>
+                      <div class="app-titlebar">
+                        <span class="traffic" aria-hidden="true"><i></i><i></i><i></i></span>
+                        <span class="app-title">dumpit</span>
+                        <span class="app-titlebar-actions" aria-hidden="true">
+                          <span class="app-icon-btn"><svg class="icon"><use href="#i-plus"/></svg></span>
+                          <span class="app-title-avatar">S</span>
+                        </span>
+                      </div>
+
+                      <div class="app-body">
+                        <aside class="app-sidebar">
+                          <div class="app-account"><span class="app-avatar">S</span><b>Sam’s space</b></div>
+
+                          <label class="app-search">
+                            <svg class="icon"><use href="#i-search"/></svg>
+                            <input type="search" placeholder="Search notes" data-app-search aria-label="Search notes" />
+                          </label>
+
+                          <nav class="app-nav" aria-label="App library">
+                            <button class="app-filter is-active" type="button" data-filter="all"><svg class="icon"><use href="#i-note"/></svg> All notes <span>7</span></button>
+                            <button class="app-filter" type="button" data-filter="tasks"><svg class="icon"><use href="#i-check"/></svg> Tasks <span>5</span></button>
+                            <button class="app-filter" type="button" data-filter="shopping"><svg class="icon"><use href="#i-cart"/></svg> Shopping <span>1</span></button>
+                            <button class="app-filter" type="button" data-filter="reminders"><svg class="icon"><use href="#i-bell"/></svg> Reminders <span>3</span></button>
+                          </nav>
+
+                          <nav class="app-nav app-nav--collections" aria-label="Collections">
+                            <button class="app-filter" type="button" data-filter="Work"><i class="cat-mark cat-work"></i> Work <span>2</span></button>
+                            <button class="app-filter" type="button" data-filter="Study"><i class="cat-mark cat-study"></i> Study <span>1</span></button>
+                            <button class="app-filter" type="button" data-filter="Ideas"><i class="cat-mark cat-ideas"></i> Ideas <span>1</span></button>
+                            <button class="app-filter" type="button" data-filter="Personal"><i class="cat-mark cat-personal"></i> Personal <span>2</span></button>
+                          </nav>
+                        </aside>
+
+                        <section class="app-list" aria-label="Notes list">
+                          <header class="app-list-head">
+                            <div><p class="app-list-title" data-list-title>All notes</p><span data-list-count>7 notes</span></div>
+                            <button class="app-sort" type="button" aria-label="Sort oldest first"><svg class="icon"><use href="#i-sort"/></svg></button>
+                          </header>
+                          <div class="app-notes" data-note-list></div>
+                        </section>
+
+                        <section class="app-detail" data-note-detail aria-label="Note detail">
+                          <button class="app-detail-back" type="button" aria-label="Back to notes"><svg class="icon"><use href="#i-chevron-left"/></svg> All notes</button>
+                          <div class="app-detail-scroll" data-detail-scroll></div>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="voices" id="voices" aria-labelledby="voices-title">
+      <div class="container">
+        <header class="chapter-head">
+          <div class="chapter-title-row">
+            <h2 id="voices-title" data-reveal style="--reveal-delay:60ms">Calmer minds, <em>reportedly.</em></h2>
+            <p class="chapter-lede" data-reveal style="--reveal-delay:120ms">Notes from people in the beta.</p>
+          </div>
+        </header>
+
+        <div class="voice-grid">
+          <figure class="voice" data-reveal>
+            <blockquote>“I stopped keeping a notes app open. I just talk to dumpit, and by the time I’m back at my desk, it’s already handled.”</blockquote>
+            <figcaption><b>Maya R.</b><span>Product designer</span></figcaption>
+          </figure>
+          <figure class="voice" data-reveal style="--reveal-delay:90ms">
+            <blockquote>“Lecture me for fifty minutes, then send one voice note. The summary is better than my handwriting ever was.”</blockquote>
+            <figcaption><b>Arjun P.</b><span>Medical student</span></figcaption>
+          </figure>
+          <figure class="voice" data-reveal style="--reveal-delay:180ms">
+            <blockquote>“The shopping list alone changed my week. I dump ingredients while cooking with one hand. That’s the whole review.”</blockquote>
+            <figcaption><b>Liv K.</b><span>New parent</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <header class="chapter-head">
+          <div class="chapter-title-row">
+            <h2 id="faq-title" data-reveal style="--reveal-delay:60ms">Questions, <em>answered.</em></h2>
+            <p class="chapter-lede" data-reveal style="--reveal-delay:120ms">Six things people ask before the first voice note.</p>
+          </div>
+        </header>
+
+        <div class="faq-grid">
+          <div class="faq-list" data-reveal style="--reveal-delay:100ms">
+            <div class="faq-item">
+              <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">
+                <span>Do I need to install another app?</span><span class="faq-plus" aria-hidden="true"><svg class="icon"><use href="#i-plus"/></svg></span>
+              </button>
+              <div class="faq-a" id="faq-a1" role="region" aria-labelledby="faq-q1">
+                <div class="faq-a-inner"><p>No. You text dumpit on WhatsApp like you’d text a friend. The web app is there when you want to see everything in one place, and the Mac app is in preview for people who live on a desktop.</p></div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">
+                <span>What does dumpit actually understand?</span><span class="faq-plus" aria-hidden="true"><svg class="icon"><use href="#i-plus"/></svg></span>
+              </button>
+              <div class="faq-a" id="faq-a2" role="region" aria-labelledby="faq-q2">
+                <div class="faq-a-inner"><p>Voice notes in 30+ languages, plus the usual mess: tasks, dates, times, shopping items, names, and topics. dumpit transcribes first, then extracts what matters. You can always edit anything it files.</p></div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">
+                <span>What if I ramble?</span><span class="faq-plus" aria-hidden="true"><svg class="icon"><use href="#i-plus"/></svg></span>
+              </button>
+              <div class="faq-a" id="faq-a3" role="region" aria-labelledby="faq-q3">
+                <div class="faq-a-inner"><p>Rambling is the point. A ten-minute brain dump becomes a summary, a few tasks, and a clean note. You don’t have to structure anything before you speak — that’s our job.</p></div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">
+                <span>Is my voice data private?</span><span class="faq-plus" aria-hidden="true"><svg class="icon"><use href="#i-plus"/></svg></span>
+              </button>
+              <div class="faq-a" id="faq-a4" role="region" aria-labelledby="faq-q4">
+                <div class="faq-a-inner"><p>Your notes are yours. Voice notes are transcribed, then processed for organization. You can delete any dump, or your whole account, whenever you want. We don’t train public models on your dumps.</p></div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a5" id="faq-q5">
+                <span>When do I get access?</span><span class="faq-plus" aria-hidden="true"><svg class="icon"><use href="#i-plus"/></svg></span>
+              </button>
+              <div class="faq-a" id="faq-a5" role="region" aria-labelledby="faq-q5">
+                <div class="faq-a-inner"><p>We send invites in small batches every week. Join the list and you’ll get a WhatsApp message when your number is ready. No app store, no setup.</p></div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a6" id="faq-q6">
+                <span>How much will it cost?</span><span class="faq-plus" aria-hidden="true"><svg class="icon"><use href="#i-plus"/></svg></span>
+              </button>
+              <div class="faq-a" id="faq-a6" role="region" aria-labelledby="faq-q6">
+                <div class="faq-a-inner"><p>Free during the private beta. Paid plans will arrive later, but early users will keep a generous free tier — that’s a promise, not a pricing page trick.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="join" id="join" aria-labelledby="join-title">
+      <div class="container join-wrap">
+        <div class="join-copy">
+          <h2 id="join-title" data-reveal style="--reveal-delay:60ms">You’ve got enough <br /><em>on your mind.</em></h2>
+          <p class="join-sub" data-reveal style="--reveal-delay:100ms">Let dumpit hold some of it. Join the private beta, free for early users, and send your first voice note today.</p>
+          <div class="signup-wrap" data-reveal style="--reveal-delay:140ms">
+            <form class="signup signup--join" data-signup novalidate>
+              <label class="sr-only" for="email-join">Email address</label>
+              <input id="email-join" type="email" name="email" placeholder="you@email.com" autocomplete="email" required />
+              <button class="text-submit" type="submit"><span>Get early access</span><svg class="icon"><use href="#i-arrow"/></svg></button>
+            </form>
+            <p class="form-note" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="#top" aria-label="dumpit home"><span>dumpit</span></a>
+          <p>A voice-first notebook for people with too much on their mind.</p>
+        </div>
+        <nav class="footer-col" aria-label="Product">
+          <p>Product</p>
+          <a href="#how">How it works</a>
+          <a href="#features">Features</a>
+          <a href="#app">The app</a>
+          <a href="#voices">Kind words</a>
+        </nav>
+        <nav class="footer-col" aria-label="Company">
+          <p>Company</p>
+          <a href="#faq">FAQ</a>
+          <a href="mailto:hello@dumpit.app">Contact</a>
+          <a href="#join">Early access</a>
+        </nav>
+      </div>
+
+      <div class="footer-mark">
+        <a href="#top" aria-label="Back to the top">dumpit</a>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 dumpit</span>
+        <span class="footer-credit">Sound effects from <a href="https://quicksounds.com" target="_blank" rel="noopener">QuickSounds</a></span>
+        <a href="#top" class="footer-top-link">Back to top <svg class="icon"><use href="#i-arrow-up-right"/></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
